@@ -177,8 +177,8 @@ public enum BytecodeInstructionType {
 	RET (Opcodes.RET),
 	
 	// might occurs a p-use 	
-	TABLESWITCH (Opcodes.TABLESWITCH),
-	LOOKUPSWITCH (Opcodes.LOOKUPSWITCH),
+	SWITCH (Opcodes.TABLESWITCH,
+			Opcodes.LOOKUPSWITCH),
 	
 	// might occurs an use
 	RETURN (Opcodes.IRETURN,

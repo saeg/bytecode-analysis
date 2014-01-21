@@ -382,8 +382,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 						"Do not support instruction types " +
 						"JSR or RET. (Deprecated in Java 6)");
 				
-			case TABLESWITCH:
-			case LOOKUPSWITCH: {
+			case SWITCH: {
 				final ValueRef value = stack.pop();
 				
 				/* new frame to indicate p-use of popped value */

@@ -54,8 +54,7 @@ public class BytecodeInstruction {
 		final boolean predicate = 
 				this.getType().equals(BytecodeInstructionType.UNARY_CMP) ||
 				this.getType().equals(BytecodeInstructionType.BINARY_CMP) ||
-				this.getType().equals(BytecodeInstructionType.TABLESWITCH) ||
-				this.getType().equals(BytecodeInstructionType.LOOKUPSWITCH);
+				this.getType().equals(BytecodeInstructionType.SWITCH);
 		return predicate;
 	}
 	
