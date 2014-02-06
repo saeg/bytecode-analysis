@@ -547,12 +547,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			  * pushes a array reference to the stack  */
 			case NEWARRAY: {
 				final ValueRef count = stack.pop();
-				if (instruction.getInstruction().getOpcode() == Opcodes.ANEWARRAY) {
-					final TypeInsnNode type = (TypeInsnNode) instruction.getInstruction();
-					stack.push(new ArrayRef(type.desc, count));
-				} else {
-					stack.push(new ArrayRef(null, count));	
-				}
+				stack.push(new ArrayRef(count));
 				break;
 			}
 			
@@ -589,7 +584,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				for (int i = 0; i < arr.dims; i++) {
 					counts[i] = stack.pop();
 				}
-				stack.push(new ArrayRef(arr.desc, counts));
+				stack.push(new ArrayRef(counts));
 				break;
 			}
 			

@@ -7,11 +7,9 @@ import java.util.List;
 
 public class ArrayRef implements ValueRef {
 	
-	public final String desc;
 	public final ValueRef[] counts;
 	
-	public ArrayRef(final String desc, final ValueRef... counts) {
-		this.desc = desc;
+	public ArrayRef(final ValueRef... counts) {
 		this.counts = counts;
 	}
 	
@@ -31,8 +29,7 @@ public class ArrayRef implements ValueRef {
 	
 	@Override
 	public String toString() {
-		return String.format("%s(%s[%s])", 
-				getClass().getSimpleName(), desc, Arrays.asList(counts));
+		return String.format("%s[%s]", getClass().getSimpleName(), Arrays.asList(counts));
 	}
 	
 }
