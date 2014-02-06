@@ -15,9 +15,15 @@ import org.objectweb.asm.tree.analysis.BasicValue;
 import org.objectweb.asm.tree.analysis.Frame;
 
 import br.usp.each.saeg.bytecode.analysis.domain.Edge;
+import br.usp.each.saeg.bytecode.analysis.graph.BasicBlockGraphNodeJoiner;
+import br.usp.each.saeg.bytecode.analysis.graph.DataflowVerifierTraversalStrategy;
 import br.usp.each.saeg.bytecode.analysis.graph.GraphNode;
+import br.usp.each.saeg.bytecode.analysis.graph.PreOrderTraversalStrategy;
 import br.usp.each.saeg.bytecode.analysis.graph.ProgramGraph;
 import br.usp.each.saeg.bytecode.analysis.graph.defuse.DefUseFrame;
+import br.usp.each.saeg.bytecode.analysis.graph.defuse.DefUseFrameComputer;
+import br.usp.each.saeg.bytecode.analysis.graph.defuse.LocalUseRemover;
+import br.usp.each.saeg.bytecode.analysis.graph.defuse.LonelyDefinitionsRemover;
 import br.usp.each.saeg.bytecode.analysis.graph.defuse.VariableRef;
 import br.usp.each.saeg.bytecode.analysis.graph.defuse.VariablesCollector;
 
@@ -34,13 +40,27 @@ public class GraphBuilder {
 	
 	private MethodNode methodNode;
 	
-	private ProgramGraph programGraph;
+	private ProgramGraph graph;
 
-	private int flowType;
+	private int type;
 	
-	public static final int NORMAL_FLOW = 1;
+	public static final int NORMAL_FLOW = 1 << 0;
 	
-	public static final int EXCEPTION_FLOW = 2;
+	public static final int EXCEPTION_FLOW = 1 << 1;
+	
+	public static final int BASIC_BLOCK = 1 << 2;
+	
+	public static final int COMPUTE_DEF_USE	= 1 << 3;
+	
+	public static final int REMOVE_LOCAL_USES = 1 << 4;
+	
+	public static final int REMOVE_UNUSED_DEFS = 1 << 5;
+	
+	public static final int DEFAULT = NORMAL_FLOW |
+									  BASIC_BLOCK | 
+									  COMPUTE_DEF_USE | 
+									  REMOVE_LOCAL_USES | 
+									  REMOVE_UNUSED_DEFS;
 
 	/**
 	 * Creates a graph builder based on a class
@@ -52,11 +72,15 @@ public class GraphBuilder {
 	 */
 	public GraphBuilder(final String className, 
 						final MethodNode methodNode,
-						final int flowType) {
+						final int type) {
 		
 		this.className = className;
 		this.methodNode = methodNode;
-		this.flowType = flowType;
+		this.type = type;
+	}
+	
+	public GraphBuilder(final String className, final MethodNode methodNode) {
+		this(className, methodNode, DEFAULT);
 	}
 
 	/**
@@ -67,19 +91,19 @@ public class GraphBuilder {
 	 */
 	public ProgramGraph buildDefUseGraph() throws CouldNotBuildGraphException {
 
-		if (programGraph == null) {
+		if (graph == null) {
 			
 			final EdgeAnalyzer analyzer = getEdgeAnalyzer();
 			
 			final Edge[] edges;
-			if ((flowType & NORMAL_FLOW) != 0) {
+			if ((type & NORMAL_FLOW) != 0) {
 				edges = analyzer.getEdges();
 			} else {
 				edges = new Edge[0];
 			}
 			
 			final Edge[] exceptionEdges;
-			if ((flowType & EXCEPTION_FLOW) != 0) {
+			if ((type & EXCEPTION_FLOW) != 0) {
 				exceptionEdges = analyzer.getExceptionEdges();
 			} else {
 				exceptionEdges = new Edge[0];
@@ -133,8 +157,22 @@ public class GraphBuilder {
 				
 				nodes.get(0).instructions.addAll(0, paramsInsns);
 				
-				programGraph = new ProgramGraph(
+				graph = new ProgramGraph(
 						className, methodNode.name, methodNode.desc, nodes.get(0));
+				
+				if ((type & BASIC_BLOCK) != 0) {
+					new PreOrderTraversalStrategy(new BasicBlockGraphNodeJoiner()).traverse(graph.getRootNode());
+				}
+				if ((type & COMPUTE_DEF_USE) != 0) {
+					new DataflowVerifierTraversalStrategy(new DefUseFrameComputer()).traverse(graph.getRootNode());
+				}
+				if ((type & REMOVE_LOCAL_USES) != 0) {
+					new PreOrderTraversalStrategy(new LocalUseRemover()).traverse(graph.getRootNode());
+				}
+				if ((type & REMOVE_UNUSED_DEFS) != 0) {
+					new PreOrderTraversalStrategy(new LonelyDefinitionsRemover()).traverse(graph.getRootNode());
+				}
+				
 			}
 
 			// Releasing references in order to save memory
@@ -142,7 +180,7 @@ public class GraphBuilder {
 			methodNode = null;
 		}
 
-		return programGraph;
+		return graph;
 	}
 	
 	/**
