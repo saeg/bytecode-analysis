@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.usp.each.saeg</groupId>
 	<artifactId>bytecode-analysis</artifactId>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>0.5.1</version>
 	<name>bytecode-analysis</name>
 	<url>https://github.com/andrioli/bytecode-analysis</url>
 	<description>A prototype-library based on ASM 4 that computes definitions/uses of each instruction</description>
@@ -12,7 +11,8 @@
 		<url>https://github.com/andrioli/bytecode-analysis</url>
 		<connection>scm:git:https://github.com/andrioli/bytecode-analysis.git</connection>
 		<developerConnection>scm:git:git@github.com:andrioli/bytecode-analysis.git</developerConnection>
-	</scm>
+	  <tag>bytecode-analysis-0.5.1</tag>
+  </scm>
 
 	<issueManagement>
 		<system>GitHub Issues</system>
