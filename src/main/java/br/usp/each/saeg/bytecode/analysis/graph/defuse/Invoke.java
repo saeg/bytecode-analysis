@@ -12,15 +12,10 @@ import br.usp.each.saeg.bytecode.analysis.domain.Method;
 public class Invoke implements ValueRef {
 	
 	public final Method method;
-	public final ValueRef receiver;
 	public final ValueRef[] args;
 
-	public Invoke(final Method method, 
-				  final ValueRef receiver, 
-				  final ValueRef[] args) {
-		
+	public Invoke(final Method method, final ValueRef[] args) {
 		this.method = method;
-		this.receiver = receiver;
 		this.args = args;
 	}
 	
@@ -30,7 +25,6 @@ public class Invoke implements ValueRef {
 		for (final ValueRef value : args) {
 			values.addAll(value.getVariableRefs());
 		}
-		values.addAll(receiver.getVariableRefs());
 		return Collections.unmodifiableList(values);
 	}
 	
@@ -47,7 +41,7 @@ public class Invoke implements ValueRef {
 	@Override
 	public String toString() {
 		return String.format("%s(%s,%s,%s)", 
-				getClass().getSimpleName(), method, receiver, Arrays.asList(args));
+				getClass().getSimpleName(), method, Arrays.asList(args));
 	}
 	
 }

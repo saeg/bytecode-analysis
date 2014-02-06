@@ -202,10 +202,9 @@ public enum BytecodeInstructionType {
 	// might occurs an use
 	INVOKE (Opcodes.INVOKEVIRTUAL,
 			Opcodes.INVOKESPECIAL,
+			Opcodes.INVOKESTATIC,
 			Opcodes.INVOKEINTERFACE),
 			
-	INVOKE_STATIC (Opcodes.INVOKESTATIC),
-	
 	INVOKE_DYNAMIC (Opcodes.INVOKEDYNAMIC),
 			
 	NEW (Opcodes.NEW),

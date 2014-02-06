@@ -162,7 +162,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			case POP: {
 				final ValueRef value = stack.pop();
 				
-				if (value instanceof Invoke || value instanceof InvokeStatic) {
+				if (value instanceof Invoke) {
 					// dropping a method result
 					frame = new DefUseFrame(null, value);
 				}
@@ -177,13 +177,13 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				
 				if (stack.peek().size() == 1) {
 					value = stack.pop();
-					if (value instanceof Invoke || value instanceof InvokeStatic) {
+					if (value instanceof Invoke) {
 						// dropping a method result
 						uses.addAll(value.getVariableRefs());
 					}
 				}
 				value = stack.pop();
-				if (value instanceof Invoke || value instanceof InvokeStatic) {
+				if (value instanceof Invoke) {
 					// dropping a method result
 					uses.addAll(value.getVariableRefs());
 				}
@@ -499,30 +499,10 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				
 				final int nargs = Type.getArgumentTypes(m.desc).length;
 				
-				final ValueRef[] args = pop(stack, nargs);
-				final ValueRef receiver = stack.pop();
+				final ValueRef[] args = pop(stack, opcode == Opcodes.INVOKESTATIC ? nargs : nargs + 1);
 				
 				final Method method = new Method(m.owner, m.name, m.desc);
-				final Invoke invoke = new Invoke(method, receiver, args);
-				
-				if (Type.getReturnType(m.desc) == Type.VOID_TYPE) {
-					frame = new DefUseFrame(null, invoke);
-				} else {
-					stack.push(invoke);
-				}
-				
-				break;
-			}
-			
-			case INVOKE_STATIC: {
-				final MethodInsnNode m = (MethodInsnNode) instruction.getInstruction();
-				
-				final int nargs = Type.getArgumentTypes(m.desc).length;				
-				
-				final ValueRef[] args = pop(stack, nargs);
-				
-				final Method method = new Method(m.owner, m.name, m.desc);
-				final InvokeStatic invoke = new InvokeStatic(method, args);
+				final Invoke invoke = new Invoke(method, args);
 				
 				if (Type.getReturnType(m.desc) == Type.VOID_TYPE) {
 					frame = new DefUseFrame(null, invoke);
