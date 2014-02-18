@@ -8,6 +8,12 @@ import br.usp.each.saeg.bytecode.analysis.BytecodeInstructionType;
 
 public class BasicBlockGraphNodeJoiner extends GraphNodeVisitor {
 	
+	private GraphNode root;
+	
+	public void start(final GraphNode root) {
+		this.root = root;
+	}
+	
 	/**
 	 * Groups sequential instructions of the given graph in single nodes
 	 * 
@@ -21,6 +27,9 @@ public class BasicBlockGraphNodeJoiner extends GraphNodeVisitor {
 		while (children.length == 1) {
 			
 			final GraphNode child = children[0];
+			
+			if (child == root)
+				return;
 			
 			if (child.getParents().length == 1) {
 				
