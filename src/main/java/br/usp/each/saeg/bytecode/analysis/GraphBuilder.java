@@ -93,7 +93,7 @@ public class GraphBuilder {
 
 		if (graph == null) {
 			
-			final EdgeAnalyzer analyzer = getEdgeAnalyzer();
+			final EdgeAnalyzer analyzer = getEdgeAnalyzer((type & EXCEPTION_FLOW) != 0);
 			
 			final Edge[] edges;
 			if ((type & NORMAL_FLOW) != 0) {
@@ -190,10 +190,10 @@ public class GraphBuilder {
 	 * @throws CouldNotBuildGraphException
 	 *             when is not possible to analyze a method
 	 */
-	private EdgeAnalyzer getEdgeAnalyzer() 
+	private EdgeAnalyzer getEdgeAnalyzer(final boolean exceptionFlow) 
 			throws CouldNotBuildGraphException {
 		
-		final EdgeAnalyzer analyzer = new EdgeAnalyzer();
+		final EdgeAnalyzer analyzer = new EdgeAnalyzer(exceptionFlow);
 		try {
 			analyzer.analyze(className, methodNode);
 		} catch (final AnalyzerException analyzerException) {

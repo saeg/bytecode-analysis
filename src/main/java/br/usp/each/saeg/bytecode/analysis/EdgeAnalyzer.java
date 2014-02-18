@@ -19,8 +19,11 @@ public class EdgeAnalyzer extends Analyzer<BasicValue> {
 	
 	private Set<Edge> exceptionEdges = Collections.emptySet();
 	
-	public EdgeAnalyzer() {
+	private final boolean exceptionFlow;
+	
+	public EdgeAnalyzer(final boolean exceptionFlow) {
 		super(new BasicInterpreter());
+		this.exceptionFlow = exceptionFlow;
 	}
 	
 	@Override
@@ -39,8 +42,11 @@ public class EdgeAnalyzer extends Analyzer<BasicValue> {
 	
 	@Override
 	protected boolean newControlFlowExceptionEdge(final int src, final int dest) {
-		exceptionEdges.add(new Edge(src, dest));
-		return true;
+		if (exceptionFlow) {
+			exceptionEdges.add(new Edge(src, dest));
+			return true;
+		}
+		return false;
 	}
 	
 	public Edge[] getEdges() {
