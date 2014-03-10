@@ -11,8 +11,16 @@
 		<url>https://github.com/andrioli/bytecode-analysis</url>
 		<connection>scm:git:https://github.com/andrioli/bytecode-analysis.git</connection>
 		<developerConnection>scm:git:git@github.com:andrioli/bytecode-analysis.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</repository>
+	</distributionManagement>
 
 	<issueManagement>
 		<system>GitHub Issues</system>
@@ -50,6 +58,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
@@ -57,4 +66,5 @@
 			<version>4.2</version>
 		</dependency>
 	</dependencies>
+
 </project>
