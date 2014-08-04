@@ -65,13 +65,6 @@ public final class DoubleWords {
 		bag.add(Opcodes.LOR);
 		bag.add(Opcodes.LXOR);
 
-		bag.add(Opcodes.DCONST_0);
-		bag.add(Opcodes.DCONST_1);
-		bag.add(Opcodes.LCONST_0);
-		bag.add(Opcodes.LCONST_1);
-		bag.add(Double.class);
-		bag.add(Long.class);
-
 		bag.add(Opcodes.I2L);
 		bag.add(Opcodes.F2L);
 		bag.add(Opcodes.D2L);

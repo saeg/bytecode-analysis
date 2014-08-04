@@ -96,13 +96,17 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				
 			/** pushes some constant value to the stack */
 			case CONSTANT:
-				stack.push(new Constant(opcode));
+				stack.push(Constant.from(opcode));
 				break;
 				
 			/** pushes some constant value to the stack */
 			case LDC: {
 				final LdcInsnNode ldc = (LdcInsnNode) instruction.getInstruction();
-				stack.push(new Constant(ldc.cst));
+				if (ldc.cst instanceof Long || ldc.cst instanceof Double) {
+				    stack.push(Constant.SIZE_TWO);
+				} else {
+				    stack.push(Constant.SIZE_ONE);
+				}
 				break;
 			}
 				

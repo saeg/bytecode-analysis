@@ -33,37 +33,62 @@ package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 import java.util.Collections;
 import java.util.List;
 
+import org.objectweb.asm.Opcodes;
+
 public class Constant implements ValueRef {
-	
-	private final int opcode;
-	
-	private final Object obj;
-	
-	public Constant(final int opcode) {
-		this.opcode = opcode;
-		this.obj = null;
-	}
-	
-	public Constant(final Object obj) {
-		this.opcode = -1;
-		this.obj = obj;
-	}
-	
-	@Override
-	public List<VariableRef> getVariableRefs() {
-		return Collections.emptyList();
-	}
-	
-	@Override
-	public int size() {
-		if (obj == null)
-			return DoubleWords.instance.contains(opcode) ? 2 : 1;
-		return DoubleWords.instance.contains(obj.getClass()) ? 2 : 1;
-	}
-	
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
-	}
-	
+
+    public static final Constant SIZE_ONE = new Constant(1);
+
+    public static final Constant SIZE_TWO = new Constant(2);
+
+    public final int size;
+
+    private Constant(final int size) {
+        this.size = size;
+    }
+
+    @Override
+    public List<VariableRef> getVariableRefs() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
+    public static Constant from(final int opcode) {
+        switch (opcode) {
+        case Opcodes.ACONST_NULL:
+        case Opcodes.ICONST_M1:
+        case Opcodes.ICONST_0:
+        case Opcodes.ICONST_1:
+        case Opcodes.ICONST_2:
+        case Opcodes.ICONST_3:
+        case Opcodes.ICONST_4:
+        case Opcodes.ICONST_5:
+            return SIZE_ONE;
+        case Opcodes.LCONST_0:
+        case Opcodes.LCONST_1:
+            return SIZE_TWO;
+        case Opcodes.FCONST_0:
+        case Opcodes.FCONST_1:
+        case Opcodes.FCONST_2:
+            return SIZE_ONE;
+        case Opcodes.DCONST_0:
+        case Opcodes.DCONST_1:
+            return SIZE_TWO;
+        case Opcodes.BIPUSH:
+        case Opcodes.SIPUSH:
+            return SIZE_ONE;
+        default:
+            throw new IllegalArgumentException("Invalid opcode: " + opcode);
+        }
+    }
+
 }
