@@ -60,12 +60,7 @@ public class Invoke implements Value {
 	
 	@Override
 	public int size() {
-		final Type type = Type.getReturnType(method.desc);
-		
-		if (type == Type.VOID_TYPE)
-			return 0;
-		
-		return DoubleWords.instance.contains(type) ? 2 : 1;
+		return Type.getReturnType(method.desc).getSize();
 	}
 	
 	@Override

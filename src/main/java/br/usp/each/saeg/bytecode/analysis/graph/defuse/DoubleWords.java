@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 
 public final class DoubleWords {
 
@@ -71,9 +70,6 @@ public final class DoubleWords {
 		bag.add(Opcodes.I2D);
 		bag.add(Opcodes.L2D);
 		bag.add(Opcodes.F2D);
-
-		bag.add(Type.DOUBLE_TYPE);
-		bag.add(Type.LONG_TYPE);
 
 		bag.add(Opcodes.LLOAD);
 		bag.add(Opcodes.DLOAD);
