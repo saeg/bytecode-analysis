@@ -47,14 +47,14 @@ import br.usp.each.saeg.bytecode.analysis.graph.GraphNodeVisitor;
 
 public class VariablesCollector extends GraphNodeVisitor {
 
-	private Set<VariableRef> defs;
+	private Set<Variable> defs;
 	
-	private Set<VariableRef> uses;
+	private Set<Variable> uses;
 	
 	@Override
 	public void start(final GraphNode root) {
-		defs = new LinkedHashSet<VariableRef>();
-		uses = new LinkedHashSet<VariableRef>();
+		defs = new LinkedHashSet<Variable>();
+		uses = new LinkedHashSet<Variable>();
 	}
 	
 	@Override
@@ -71,33 +71,33 @@ public class VariablesCollector extends GraphNodeVisitor {
 		}
 	}
 	
-	public List<VariableRef> getVariableRefs() {
-		Set<VariableRef> temp = new HashSet<VariableRef>();
+	public List<Variable> getVariableRefs() {
+		Set<Variable> temp = new HashSet<Variable>();
 		temp.addAll(defs);
 		temp.addAll(uses);
 		
-		List<VariableRef> vars = new ArrayList<VariableRef>(temp);
-		Collections.sort(vars, new Comparator<VariableRef>() {
+		List<Variable> vars = new ArrayList<Variable>(temp);
+		Collections.sort(vars, new Comparator<Variable>() {
 			@Override
-			public int compare(VariableRef o1, VariableRef o2) {
+			public int compare(Variable o1, Variable o2) {
 				return o1.toString().compareTo(o2.toString());
 			}
 		});
 		return vars;
 	}
 
-	public Set<VariableRef> getDefsVariableRefs() {
+	public Set<Variable> getDefsVariableRefs() {
 		return Collections.unmodifiableSet(defs);
 	}
 
-	public Set<VariableRef> getUsesVariableRefs() {
+	public Set<Variable> getUsesVariableRefs() {
 		return Collections.unmodifiableSet(uses);
 	}
 	
-	public static List<VariableRef> getParameters(
+	public static List<Variable> getParameters(
 			final String desc, final int acess) {
 		
-		final List<VariableRef> params = new ArrayList<VariableRef>();
+		final List<Variable> params = new ArrayList<Variable>();
 		
 		int index = 0;
 		

@@ -50,8 +50,8 @@ public class Invoke implements Value {
 	}
 	
 	@Override
-	public List<VariableRef> getVariableRefs() {
-		final List<VariableRef> values = new ArrayList<VariableRef>();
+	public List<Variable> getVariableRefs() {
+		final List<Variable> values = new ArrayList<Variable>();
 		for (final Value value : args) {
 			values.addAll(value.getVariableRefs());
 		}

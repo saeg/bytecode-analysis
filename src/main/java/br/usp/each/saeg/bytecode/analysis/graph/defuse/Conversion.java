@@ -43,7 +43,7 @@ public class Conversion implements Value {
 	}
 	
 	@Override
-	public List<VariableRef> getVariableRefs() {
+	public List<Variable> getVariableRefs() {
 		return value.getVariableRefs();
 	}
 	

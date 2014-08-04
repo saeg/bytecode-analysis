@@ -42,7 +42,7 @@ public class ObjectRef implements Value {
 	}
 	
 	@Override
-	public List<VariableRef> getVariableRefs() {
+	public List<Variable> getVariableRefs() {
 		return Collections.emptyList();
 	}
 	

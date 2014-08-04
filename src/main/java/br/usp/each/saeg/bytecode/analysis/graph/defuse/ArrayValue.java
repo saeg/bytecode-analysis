@@ -50,8 +50,8 @@ public class ArrayValue implements Value {
 	}
 	
 	@Override
-	public List<VariableRef> getVariableRefs() {
-		final List<VariableRef> values = new ArrayList<VariableRef>();
+	public List<Variable> getVariableRefs() {
+		final List<Variable> values = new ArrayList<Variable>();
 		
 		int dims = 1;
 		Value carref = arref;
@@ -65,7 +65,7 @@ public class ArrayValue implements Value {
 			root = ObjectField.class.cast(root).objectref;
 		}
 		
-		if (carref instanceof VariableRef &&
+		if (carref instanceof Variable &&
 				(root instanceof Local || root instanceof StaticField)) {
 			
 			ArrayComponent component = new ArrayComponent(carref);

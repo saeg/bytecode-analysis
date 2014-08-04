@@ -30,7 +30,7 @@
  */
 package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 
-public class ArrayComponent extends VariableRef {
+public class ArrayComponent extends Variable {
 	
 	public final Value arref;
 

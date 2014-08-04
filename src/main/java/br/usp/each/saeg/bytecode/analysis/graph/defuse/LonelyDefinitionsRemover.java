@@ -39,7 +39,7 @@ import br.usp.each.saeg.bytecode.analysis.graph.PreOrderTraversalStrategy;
 
 public class LonelyDefinitionsRemover extends GraphNodeVisitor {
 	
-	private Set<VariableRef> uses;
+	private Set<Variable> uses;
 
 	@Override
 	public void start(final GraphNode root) {
@@ -57,7 +57,7 @@ public class LonelyDefinitionsRemover extends GraphNodeVisitor {
 			
 			if (insn.frame != null && insn.frame.def != null) {
 				
-				VariableRef def = null;
+				Variable def = null;
 				
 				if (uses.contains(insn.frame.def)) {
 					def = insn.frame.def;

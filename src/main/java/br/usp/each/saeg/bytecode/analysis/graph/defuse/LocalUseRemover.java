@@ -44,7 +44,7 @@ public class LocalUseRemover extends GraphNodeVisitor {
 	@Override
 	public void visit(final GraphNode node) {
 		
-		final Set<VariableRef> defs = new HashSet<VariableRef>();
+		final Set<Variable> defs = new HashSet<Variable>();
 		
 		for (final BytecodeInstruction instruction : node.instructions) {
 			
@@ -52,9 +52,9 @@ public class LocalUseRemover extends GraphNodeVisitor {
 			
 			if (instruction.frame != null) {
 				
-				final List<VariableRef> uses = new ArrayList<VariableRef>();
+				final List<Variable> uses = new ArrayList<Variable>();
 				
-				for (final VariableRef use : instruction.frame.uses) {
+				for (final Variable use : instruction.frame.uses) {
 					if (!defs.contains(use) || predicate) {
 						uses.add(use);
 					}

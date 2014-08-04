@@ -54,7 +54,7 @@ import br.usp.each.saeg.bytecode.analysis.graph.defuse.DefUseFrame;
 import br.usp.each.saeg.bytecode.analysis.graph.defuse.DefUseFrameComputer;
 import br.usp.each.saeg.bytecode.analysis.graph.defuse.LocalUseRemover;
 import br.usp.each.saeg.bytecode.analysis.graph.defuse.LonelyDefinitionsRemover;
-import br.usp.each.saeg.bytecode.analysis.graph.defuse.VariableRef;
+import br.usp.each.saeg.bytecode.analysis.graph.defuse.Variable;
 import br.usp.each.saeg.bytecode.analysis.graph.defuse.VariablesCollector;
 
 /**
@@ -167,18 +167,18 @@ public class GraphBuilder {
 			}
 
 			if (!nodes.isEmpty()) {
-				final List<VariableRef> params = VariablesCollector
+				final List<Variable> params = VariablesCollector
 						.getParameters(methodNode.desc, methodNode.access);
 				
 				final List<BytecodeInstruction> paramsInsns = 
 						new ArrayList<BytecodeInstruction>(params.size());
 				
-				for (final VariableRef var : params) {
+				for (final Variable var : params) {
 					
 					final BytecodeInstruction insn = 
 							new BytecodeInstruction(new InsnNode(Opcodes.NOP));
 					
-					final List<VariableRef> uses = Collections.emptyList();
+					final List<Variable> uses = Collections.emptyList();
 					
 					insn.frame = new DefUseFrame(var, uses);
 					

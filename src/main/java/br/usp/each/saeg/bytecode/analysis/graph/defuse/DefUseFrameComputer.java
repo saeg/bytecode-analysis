@@ -142,7 +142,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 					final BytecodeInstruction arraydef = 
 							new BytecodeInstruction(new InsnNode(Opcodes.NOP));
 					
-					final List<VariableRef> uses = Collections.emptyList();
+					final List<Variable> uses = Collections.emptyList();
 					arraydef.frame = new DefUseFrame(new ArrayComponent(definition), uses);
 					
 					node.instructions.add(idx + 1, arraydef);
@@ -159,7 +159,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				final Value index = stack.pop();
 				final Value arref = stack.pop();
 				
-				final List<VariableRef> uses = new ArrayList<VariableRef>();
+				final List<Variable> uses = new ArrayList<Variable>();
 				uses.addAll(value.getVariableRefs());
 				uses.addAll(index.getVariableRefs());
 				uses.addAll(arref.getVariableRefs());
@@ -177,7 +177,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				}
 				
 				ArrayComponent component = null;
-				if (carref instanceof VariableRef &&
+				if (carref instanceof Variable &&
 						(root instanceof Local || root instanceof StaticField)) {
 					component = new ArrayComponent(carref);
 					while (--dims > 0) {
@@ -205,7 +205,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			}
 				
 			case POP2: {
-				final List<VariableRef> uses = new ArrayList<VariableRef>();
+				final List<Variable> uses = new ArrayList<Variable>();
 				
 				Value value;
 				
@@ -463,7 +463,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 					final BytecodeInstruction arraydef = 
 							new BytecodeInstruction(new InsnNode(Opcodes.NOP));
 					
-					final List<VariableRef> uses = Collections.emptyList();
+					final List<Variable> uses = Collections.emptyList();
 					arraydef.frame = new DefUseFrame(new ArrayComponent(definition), uses);
 					
 					node.instructions.add(idx + 1, arraydef);
@@ -508,18 +508,18 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				 * and use of the value in top of the stack */
 				final ObjectField definition = new ObjectField(f.owner, f.name, f.desc, objectref);
 				
-				final List<VariableRef> uses = new ArrayList<VariableRef>();
+				final List<Variable> uses = new ArrayList<Variable>();
 				uses.addAll(value.getVariableRefs());
 				uses.addAll(objectref.getVariableRefs());
 				
-				frame = new DefUseFrame(root instanceof VariableRef ? definition : null, uses);
+				frame = new DefUseFrame(root instanceof Variable ? definition : null, uses);
 				
 				if (value instanceof ArrayRef) {
 					
 					final BytecodeInstruction arraydef = 
 							new BytecodeInstruction(new InsnNode(Opcodes.NOP));
 					
-					final List<VariableRef> array_uses = Collections.emptyList();
+					final List<Variable> array_uses = Collections.emptyList();
 					arraydef.frame = new DefUseFrame(new ArrayComponent(definition), array_uses);
 					
 					node.instructions.add(idx + 1, arraydef);
@@ -667,7 +667,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			final BytecodeInstruction insn =
 					new BytecodeInstruction(new InsnNode(Opcodes.NOP));
 			
-			final List<VariableRef> uses = Collections.emptyList();
+			final List<Variable> uses = Collections.emptyList();
 			
 			insn.frame = new DefUseFrame(var, uses);
 			
@@ -681,7 +681,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 						new BytecodeInstruction(new InsnNode(Opcodes.NOP));
 				
 				ArrayComponent component = new ArrayComponent(var);
-				final List<VariableRef> array_uses = Collections.emptyList();
+				final List<Variable> array_uses = Collections.emptyList();
 				arraydef.frame = new DefUseFrame(component, array_uses);
 				
 				fieldsInsns.add(arraydef);

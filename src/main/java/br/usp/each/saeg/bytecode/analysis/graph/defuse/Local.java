@@ -30,7 +30,7 @@
  */
 package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 
-public class Local extends VariableRef {
+public class Local extends Variable {
 	
 	public final int opcode;
 	public final int var;

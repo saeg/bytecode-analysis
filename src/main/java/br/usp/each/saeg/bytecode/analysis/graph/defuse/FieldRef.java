@@ -32,7 +32,7 @@ package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 
 import org.objectweb.asm.Type;
 
-public class FieldRef extends VariableRef {
+public class FieldRef extends Variable {
 
 	public final String owner;
 	public final String name;

@@ -34,7 +34,7 @@ import java.util.List;
 
 public interface Value {
 
-    List<VariableRef> getVariableRefs();
+    List<Variable> getVariableRefs();
 
     int size();
 

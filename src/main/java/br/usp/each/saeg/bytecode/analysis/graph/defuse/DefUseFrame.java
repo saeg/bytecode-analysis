@@ -34,16 +34,16 @@ import java.util.List;
 
 public class DefUseFrame {
 	
-	public final VariableRef def;
+	public final Variable def;
 	
-	public final List<VariableRef> uses;
+	public final List<Variable> uses;
 	
-	public DefUseFrame(final VariableRef definition, final Value use) {
+	public DefUseFrame(final Variable definition, final Value use) {
 		this.def = definition;
 		this.uses = use.getVariableRefs();
 	}
 	
-	public DefUseFrame(final VariableRef definition, final List<VariableRef> uses) {
+	public DefUseFrame(final Variable definition, final List<Variable> uses) {
 		this.def = definition;
 		this.uses = uses;
 	}

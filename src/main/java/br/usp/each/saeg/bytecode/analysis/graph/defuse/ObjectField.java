@@ -48,8 +48,8 @@ public class ObjectField extends FieldRef {
 	}
 	
 	@Override
-	public List<VariableRef> getVariableRefs() {
-		final List<VariableRef> values = new ArrayList<VariableRef>();
+	public List<Variable> getVariableRefs() {
+		final List<Variable> values = new ArrayList<Variable>();
 		
 		values.addAll(objectref.getVariableRefs());
 		
@@ -58,7 +58,7 @@ public class ObjectField extends FieldRef {
 			root = ObjectField.class.cast(root).objectref;
 		}
 		
-		if (objectref instanceof VariableRef &&
+		if (objectref instanceof Variable &&
 				(root instanceof Local || root instanceof StaticField)) {
 			values.add(this);
 		}

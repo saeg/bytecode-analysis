@@ -49,8 +49,8 @@ public class Or implements Value {
 	}
 	
 	@Override
-	public List<VariableRef> getVariableRefs() {
-		final List<VariableRef> values = new ArrayList<VariableRef>();
+	public List<Variable> getVariableRefs() {
+		final List<Variable> values = new ArrayList<Variable>();
 		values.addAll(value1.getVariableRefs());
 		values.addAll(value2.getVariableRefs());
 		return Collections.unmodifiableList(values);
