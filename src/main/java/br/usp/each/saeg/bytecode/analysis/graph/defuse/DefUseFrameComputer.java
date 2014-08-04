@@ -56,25 +56,25 @@ import br.usp.each.saeg.bytecode.analysis.graph.GraphNodeVisitor;
 
 public class DefUseFrameComputer extends GraphNodeVisitor {
 	
-	private Map<Integer, Stack<ValueRef>> stackMapIn;
+	private Map<Integer, Stack<Value>> stackMapIn;
 	
-	private Map<Integer, Stack<ValueRef>> stackMapOut;
+	private Map<Integer, Stack<Value>> stackMapOut;
 	
 	private HashSet<FieldRef> fields;
 	
 	@Override
 	public void start(final GraphNode root) {
 		/** start with stack always clear. */
-		stackMapIn = new HashMap<Integer, Stack<ValueRef>>();
-		stackMapOut = new HashMap<Integer, Stack<ValueRef>>();
+		stackMapIn = new HashMap<Integer, Stack<Value>>();
+		stackMapOut = new HashMap<Integer, Stack<Value>>();
 		fields = new HashSet<FieldRef>();
-		stackMapIn.put(root.id, new Stack<ValueRef>());
+		stackMapIn.put(root.id, new Stack<Value>());
 	}
 	
 	@Override
 	public void visit(final GraphNode node) {
 		
-		final Stack<ValueRef> stack = new Stack<ValueRef>();
+		final Stack<Value> stack = new Stack<Value>();
 		stack.addAll(stackMapIn.get(node.id));
 		
 		for (int idx = 0; idx < node.instructions.size(); idx++) { 
@@ -120,8 +120,8 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			/** pops two operands (..., array reference, index) and 
 			  * pushes the value in the component of the array at index position */
 			case LOAD_ARRAY: {
-				final ValueRef index = stack.pop();
-				final ValueRef arref = stack.pop();
+				final Value index = stack.pop();
+				final Value arref = stack.pop();
 				stack.push(new ArrayValue(opcode, arref, index));	
 				break;
 			}
@@ -130,7 +130,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			  * this is a definition of that variable */
 			case STORE: {
 				final VarInsnNode v = (VarInsnNode) instruction.getInstruction();
-				final ValueRef value = stack.pop();
+				final Value value = stack.pop();
 				
 				/* new frame to indicate definition of local variable 
 				 * and use of the value in top of the stack */
@@ -155,9 +155,9 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			  * store value as the component of the array at index position.
 			  * this is a definition of component of the array */
 			case STORE_ARRAY: {
-				final ValueRef value = stack.pop();
-				final ValueRef index = stack.pop();
-				final ValueRef arref = stack.pop();
+				final Value value = stack.pop();
+				final Value index = stack.pop();
+				final Value arref = stack.pop();
 				
 				final List<VariableRef> uses = new ArrayList<VariableRef>();
 				uses.addAll(value.getVariableRefs());
@@ -165,13 +165,13 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				uses.addAll(arref.getVariableRefs());
 				
 				int dims = 1;
-				ValueRef carref = arref;
+				Value carref = arref;
 				while (carref instanceof ArrayValue) {
 					dims++;
 					carref = ArrayValue.class.cast(carref).arref;
 				}
 				
-				ValueRef root = carref;
+				Value root = carref;
 				while (root instanceof ObjectField) {
 					root = ObjectField.class.cast(root).objectref;
 				}
@@ -194,7 +194,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			// ------- Instructions that manipulate the stack
 			
 			case POP: {
-				final ValueRef value = stack.pop();
+				final Value value = stack.pop();
 				
 				if (value instanceof Invoke) {
 					// dropping a method result
@@ -207,7 +207,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			case POP2: {
 				final List<VariableRef> uses = new ArrayList<VariableRef>();
 				
-				ValueRef value;
+				Value value;
 				
 				if (stack.peek().size() == 1) {
 					value = stack.pop();
@@ -234,8 +234,8 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				break;
 				
 			case DUP_X1: {
-				final ValueRef value1 = stack.pop();
-				final ValueRef value2 = stack.pop();
+				final Value value1 = stack.pop();
+				final Value value2 = stack.pop();
 				stack.push(value1);
 				stack.push(value2);
 				stack.push(value1);
@@ -243,10 +243,10 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			}
 			
 			case DUP_X2: {
-				final ValueRef value1 = stack.pop(); // Always category 1
-				final ValueRef value2 = stack.pop();
+				final Value value1 = stack.pop(); // Always category 1
+				final Value value2 = stack.pop();
 				if (value2.size() == 1) {
-					final ValueRef value3 = stack.pop();
+					final Value value3 = stack.pop();
 					stack.push(value1);
 					stack.push(value3);
 				} else {
@@ -258,9 +258,9 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			}
 			
 			case DUP2: {
-				final ValueRef value1 = stack.pop();
+				final Value value1 = stack.pop();
 				if (value1.size() == 1) {
-					final ValueRef value2 = stack.peek();
+					final Value value2 = stack.peek();
 					stack.push(value1);
 					stack.push(value2);
 					stack.push(value1);
@@ -272,17 +272,17 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			}
 			
 			case DUP2_X1: {
-				final ValueRef value1 = stack.pop();
+				final Value value1 = stack.pop();
 				if (value1.size() == 1) {
-					final ValueRef value2 = stack.pop();
-					final ValueRef value3 = stack.pop();
+					final Value value2 = stack.pop();
+					final Value value3 = stack.pop();
 					stack.push(value2);
 					stack.push(value1);
 					stack.push(value3);
 					stack.push(value2);
 					stack.push(value1);
 				} else {
-					final ValueRef value2 = stack.pop();
+					final Value value2 = stack.pop();
 					stack.push(value1);
 					stack.push(value2);
 					stack.push(value1);
@@ -291,16 +291,16 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			}
 			
 			case DUP2_X2: {
-				final ValueRef value1 = stack.pop();
-				final ValueRef value2 = stack.pop();
+				final Value value1 = stack.pop();
+				final Value value2 = stack.pop();
 				if (value1.size() == 1) {
 					// In this case: value1 is category 1 
 					// and value2 is mandatorily category 1
-					final ValueRef value3 = stack.pop();
+					final Value value3 = stack.pop();
 					if (value3.size() == 1) {
 						// In this case: value3 is category 1 
 						// and value4 is mandatorily category 1
-						final ValueRef value4 = stack.pop();
+						final Value value4 = stack.pop();
 						
 						// Form 1: Value 1,2,3 and 4 are category 1
 						stack.push(value2);
@@ -325,7 +325,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 					if (value2.size() == 1) {
 						// In this case: value2 is category 1 
 						// and value3 is mandatorily category 1
-						final ValueRef value3 = stack.pop();
+						final Value value3 = stack.pop();
 						
 						// Form 2: value1 is a value of a category 2
 						// and value2 and value3 are both values of a category 1
@@ -344,8 +344,8 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			}
 			
 			case SWAP: {
-				final ValueRef value1 = stack.pop();
-				final ValueRef value2 = stack.pop();
+				final Value value1 = stack.pop();
+				final Value value2 = stack.pop();
 				stack.push(value1);
 				stack.push(value2);
 				break;
@@ -356,8 +356,8 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			/** pops two operands (..., value1, value2) and 
 			  * pushes the result value1 operator value2 */
 			case BINARY_MATH: {
-				final ValueRef value2 = stack.pop();
-				final ValueRef value1 = stack.pop();
+				final Value value2 = stack.pop();
+				final Value value1 = stack.pop();
 				stack.push(new Binary(opcode, value1, value2));
 				break;
 			}
@@ -387,8 +387,8 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			  * branch if comparison succeeds. 
 			  * this is a p-use of popped operands */
 			case BINARY_CMP: {
-				final ValueRef value2 = stack.pop();
-				final ValueRef value1 = stack.pop();
+				final Value value2 = stack.pop();
+				final Value value1 = stack.pop();
 				
 				/* new frame to indicate p-use of popped values */
 				frame = new DefUseFrame(null, new Binary(opcode, value1, value2));
@@ -399,7 +399,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			  * branch if comparison succeeds.
 			  * this is a p-use of popped operand */
 			case UNARY_CMP: {
-				final ValueRef value = stack.pop();
+				final Value value = stack.pop();
 				
 				/* new frame to indicate p-use of popped value */
 				frame = new DefUseFrame(null, value);
@@ -417,7 +417,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 						"JSR or RET. (Deprecated in Java 6)");
 				
 			case SWITCH: {
-				final ValueRef value = stack.pop();
+				final Value value = stack.pop();
 				
 				/* new frame to indicate p-use of popped value */
 				frame = new DefUseFrame(null, value);
@@ -427,7 +427,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			/** pops one operand (..., value) and returns to caller 
 			  * Occurs a use of the popped operand */
 			case RETURN: {
-				final ValueRef value = stack.pop();
+				final Value value = stack.pop();
 				
 				/* new frame to indicate use of popped value */
 				frame = new DefUseFrame(null, value);
@@ -451,7 +451,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			  * this is a definition of that variable */
 			case PUTSTATIC: {
 				final FieldInsnNode f = (FieldInsnNode) instruction.getInstruction();
-				final ValueRef value = stack.pop();
+				final Value value = stack.pop();
 				
 				/* new frame to indicate definition of static variable 
 				 * and use of the value in top of the stack */
@@ -476,11 +476,11 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			  * pushes a object field variable to the stack */
 			case GETFIELD: {
 				final FieldInsnNode f = (FieldInsnNode) instruction.getInstruction();
-				final ValueRef objectref = stack.pop();
+				final Value objectref = stack.pop();
 				final ObjectField field = new ObjectField(f.owner, f.name, f.desc, objectref);
 				stack.push(field);
 				
-				ValueRef root = objectref;
+				Value root = objectref;
 				while (root instanceof ObjectField) {
 					root = ObjectField.class.cast(root).objectref;
 				}
@@ -496,10 +496,10 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			  * this is a definition of that variable */
 			case PUTFIELD: {
 				final FieldInsnNode f = (FieldInsnNode) instruction.getInstruction();
-				final ValueRef value = stack.pop();
-				final ValueRef objectref = stack.pop();
+				final Value value = stack.pop();
+				final Value objectref = stack.pop();
 				
-				ValueRef root = objectref;
+				Value root = objectref;
 				while (root instanceof ObjectField) {
 					root = ObjectField.class.cast(root).objectref;
 				}
@@ -533,7 +533,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				
 				final int nargs = Type.getArgumentTypes(m.desc).length;
 				
-				final ValueRef[] args = pop(stack, opcode == Opcodes.INVOKESTATIC ? nargs : nargs + 1);
+				final Value[] args = pop(stack, opcode == Opcodes.INVOKESTATIC ? nargs : nargs + 1);
 				
 				final Method method = new Method(m.owner, m.name, m.desc);
 				final Invoke invoke = new Invoke(method, args);
@@ -560,7 +560,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			/** Create new array. pops one operand (..., count) and 
 			  * pushes a array reference to the stack  */
 			case NEWARRAY: {
-				final ValueRef count = stack.pop();
+				final Value count = stack.pop();
 				stack.push(new ArrayRef(count));
 				break;
 			}
@@ -568,13 +568,13 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 			/** Get length of array. pops one operand (..., array reference) and 
 			  * pushes a array length to the stack  */
 			case ARRAYLENGTH: {
-				final ValueRef array = stack.pop();
+				final Value array = stack.pop();
 				stack.push(new ArrayLength(array));
 				break;
 			}
 			
 			case ATHROW: {
-				final ValueRef value = stack.pop();
+				final Value value = stack.pop();
 				
 				/* new frame to indicate use of popped value */
 				frame = new DefUseFrame(null, value);
@@ -586,7 +586,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				break;
 				
 			case MONITOR:
-				final ValueRef value = stack.pop();
+				final Value value = stack.pop();
 				
 				/* new frame to indicate use of popped value */
 				frame = new DefUseFrame(null, value);
@@ -594,7 +594,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 				
 			case MULTIANEWARRAY: {
 				final MultiANewArrayInsnNode arr = (MultiANewArrayInsnNode) instruction.getInstruction();
-				final ValueRef[] counts = new ValueRef[arr.dims];
+				final Value[] counts = new Value[arr.dims];
 				for (int i = 0; i < arr.dims; i++) {
 					counts[i] = stack.pop();
 				}
@@ -613,32 +613,32 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 
 	@Override
 	public void visitEdge(final GraphNode src, final GraphNode dest) {
-		final Stack<ValueRef> newStack = new Stack<ValueRef>();
+		final Stack<Value> newStack = new Stack<Value>();
 		newStack.addAll(stackMapOut.get(src.id));
 		stackMapIn.put(dest.id, newStack);
 	}
 	
 	@Override
 	public void visitExceptionEdge(final GraphNode src, final GraphNode dest) {
-		final Stack<ValueRef> newStack = new Stack<ValueRef>();
+		final Stack<Value> newStack = new Stack<Value>();
 		newStack.push(new ObjectRef("Exception"));
 		stackMapIn.put(dest.id, newStack);
 	}
 	
 	public boolean visitEdgeMerge(final GraphNode src, final GraphNode dest) {
 		
-		final Stack<ValueRef> newStack = new Stack<ValueRef>();
+		final Stack<Value> newStack = new Stack<Value>();
 		
 		// Should have the same size and the same kind of elements
-		Stack<ValueRef> oldIn = stackMapIn.get(dest.id);
-		Stack<ValueRef> newIn = stackMapOut.get(src.id);
+		Stack<Value> oldIn = stackMapIn.get(dest.id);
+		Stack<Value> newIn = stackMapOut.get(src.id);
 		
 		boolean changed = false;
 			
 		for (int i = 0; i < oldIn.size(); i++) {
 			
-			ValueRef oldRef = oldIn.get(i);
-			ValueRef newRef = newIn.get(i);
+			Value oldRef = oldIn.get(i);
+			Value newRef = newIn.get(i);
 			
 			if (!oldRef.getVariableRefs().containsAll(newRef.getVariableRefs()) ||
 					!newRef.getVariableRefs().containsAll(oldRef.getVariableRefs())) {
@@ -703,8 +703,8 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 		fields = null;
 	}
 	
-	private ValueRef[] pop(Stack<ValueRef> stack, final int nargs) {
-		final ValueRef[] args = new ValueRef[nargs];
+	private Value[] pop(Stack<Value> stack, final int nargs) {
+		final Value[] args = new Value[nargs];
 		for (int i = 0; i < nargs; i++) {
 			args[i] = stack.pop();
 		}

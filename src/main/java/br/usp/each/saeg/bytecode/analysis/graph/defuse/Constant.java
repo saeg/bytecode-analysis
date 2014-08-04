@@ -35,7 +35,7 @@ import java.util.List;
 
 import org.objectweb.asm.Opcodes;
 
-public class Constant implements ValueRef {
+public class Constant implements Value {
 
     public static final Constant SIZE_ONE = new Constant(1);
 

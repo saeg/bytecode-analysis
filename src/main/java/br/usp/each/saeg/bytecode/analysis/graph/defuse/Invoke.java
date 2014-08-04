@@ -39,12 +39,12 @@ import org.objectweb.asm.Type;
 
 import br.usp.each.saeg.bytecode.analysis.domain.Method;
 
-public class Invoke implements ValueRef {
+public class Invoke implements Value {
 	
 	public final Method method;
-	public final ValueRef[] args;
+	public final Value[] args;
 
-	public Invoke(final Method method, final ValueRef[] args) {
+	public Invoke(final Method method, final Value[] args) {
 		this.method = method;
 		this.args = args;
 	}
@@ -52,7 +52,7 @@ public class Invoke implements ValueRef {
 	@Override
 	public List<VariableRef> getVariableRefs() {
 		final List<VariableRef> values = new ArrayList<VariableRef>();
-		for (final ValueRef value : args) {
+		for (final Value value : args) {
 			values.addAll(value.getVariableRefs());
 		}
 		return Collections.unmodifiableList(values);

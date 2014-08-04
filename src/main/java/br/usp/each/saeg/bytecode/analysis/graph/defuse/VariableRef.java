@@ -33,7 +33,7 @@ package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class VariableRef implements ValueRef {
+public abstract class VariableRef implements Value {
 	
 	@Override
 	public List<VariableRef> getVariableRefs() {

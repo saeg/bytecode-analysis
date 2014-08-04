@@ -34,15 +34,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Binary implements ValueRef {
+public class Binary implements Value {
 	
 	public final int opcode;
-	public final ValueRef value1;
-	public final ValueRef value2;
+	public final Value value1;
+	public final Value value2;
 
 	public Binary(final int opcode, 
-				  final ValueRef value1, 
-				  final ValueRef value2) {
+				  final Value value1, 
+				  final Value value2) {
 		
 		this.opcode = opcode;
 		this.value1 = value1;

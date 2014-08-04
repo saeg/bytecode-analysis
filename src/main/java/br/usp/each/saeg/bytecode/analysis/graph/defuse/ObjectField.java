@@ -36,12 +36,12 @@ import java.util.List;
 
 public class ObjectField extends FieldRef {
 
-	public final ValueRef objectref;
+	public final Value objectref;
 	
 	public ObjectField(final String owner, 
 					   final String name, 
 					   final String desc, 
-					   final ValueRef objectref) {
+					   final Value objectref) {
 		
 		super(owner, name, desc);
 		this.objectref = objectref;
@@ -53,7 +53,7 @@ public class ObjectField extends FieldRef {
 		
 		values.addAll(objectref.getVariableRefs());
 		
-		ValueRef root = objectref;
+		Value root = objectref;
 		while (root instanceof ObjectField) {
 			root = ObjectField.class.cast(root).objectref;
 		}

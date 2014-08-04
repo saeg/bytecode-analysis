@@ -32,11 +32,11 @@ package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 
 import java.util.List;
 
-public class ArrayLength implements ValueRef {
+public class ArrayLength implements Value {
 
-	public final ValueRef arref;
+	public final Value arref;
 
-	public ArrayLength(final ValueRef arref) {
+	public ArrayLength(final Value arref) {
 		this.arref = arref;
 	}
 

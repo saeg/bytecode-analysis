@@ -34,15 +34,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ArrayValue implements ValueRef {
+public class ArrayValue implements Value {
 
 	public final int opcode;
-	public final ValueRef arref;
-	public final ValueRef index;
+	public final Value arref;
+	public final Value index;
 
 	public ArrayValue(final int opcode, 
-					  final ValueRef arref, 
-					  final ValueRef index) {
+					  final Value arref, 
+					  final Value index) {
 		
 		this.opcode = opcode;
 		this.arref = arref;
@@ -54,13 +54,13 @@ public class ArrayValue implements ValueRef {
 		final List<VariableRef> values = new ArrayList<VariableRef>();
 		
 		int dims = 1;
-		ValueRef carref = arref;
+		Value carref = arref;
 		while (carref instanceof ArrayValue) {
 			dims++;
 			carref = ArrayValue.class.cast(carref).arref;
 		}
 		
-		ValueRef root = carref;
+		Value root = carref;
 		while (root instanceof ObjectField) {
 			root = ObjectField.class.cast(root).objectref;
 		}

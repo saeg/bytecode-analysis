@@ -34,12 +34,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Or implements ValueRef {
+public class Or implements Value {
 	
-	public final ValueRef value1;
-	public final ValueRef value2;
+	public final Value value1;
+	public final Value value2;
 
-	public Or(final ValueRef value1, final ValueRef value2) {
+	public Or(final Value value1, final Value value2) {
 		if (value1.size() != value2.size()) {
 			throw new IllegalArgumentException("Size should be the same");
 		}

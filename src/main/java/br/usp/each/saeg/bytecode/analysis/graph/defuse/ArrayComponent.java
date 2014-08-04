@@ -32,9 +32,9 @@ package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 
 public class ArrayComponent extends VariableRef {
 	
-	public final ValueRef arref;
+	public final Value arref;
 
-	public ArrayComponent(final ValueRef arref) {
+	public ArrayComponent(final Value arref) {
 		this.arref = arref;
 	}
 

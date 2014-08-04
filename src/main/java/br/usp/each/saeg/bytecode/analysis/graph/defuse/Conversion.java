@@ -32,12 +32,12 @@ package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 
 import java.util.List;
 
-public class Conversion implements ValueRef {
+public class Conversion implements Value {
 
 	public final int opcode;
-	public final ValueRef value;
+	public final Value value;
 
-	public Conversion(final int opcode, final ValueRef value) {
+	public Conversion(final int opcode, final Value value) {
 		this.opcode = opcode;
 		this.value = value;
 	}

@@ -38,7 +38,7 @@ public class DefUseFrame {
 	
 	public final List<VariableRef> uses;
 	
-	public DefUseFrame(final VariableRef definition, final ValueRef use) {
+	public DefUseFrame(final VariableRef definition, final Value use) {
 		this.def = definition;
 		this.uses = use.getVariableRefs();
 	}

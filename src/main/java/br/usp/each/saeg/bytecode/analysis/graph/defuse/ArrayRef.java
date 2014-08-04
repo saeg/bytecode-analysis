@@ -35,18 +35,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ArrayRef implements ValueRef {
+public class ArrayRef implements Value {
 	
-	public final ValueRef[] counts;
+	public final Value[] counts;
 	
-	public ArrayRef(final ValueRef... counts) {
+	public ArrayRef(final Value... counts) {
 		this.counts = counts;
 	}
 	
 	@Override
 	public List<VariableRef> getVariableRefs() {
 		final List<VariableRef> values = new ArrayList<VariableRef>();
-		for (final ValueRef value : counts) {
+		for (final Value value : counts) {
 			values.addAll(value.getVariableRefs());
 		}
 		return Collections.unmodifiableList(values);

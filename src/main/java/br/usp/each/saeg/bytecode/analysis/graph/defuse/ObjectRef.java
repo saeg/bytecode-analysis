@@ -33,7 +33,7 @@ package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 import java.util.Collections;
 import java.util.List;
 
-public class ObjectRef implements ValueRef {
+public class ObjectRef implements Value {
 	
 	public final String desc;
 	
