@@ -60,14 +60,14 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 	
 	private Map<Integer, Stack<Value>> stackMapOut;
 	
-	private HashSet<FieldRef> fields;
+	private HashSet<Field> fields;
 	
 	@Override
 	public void start(final GraphNode root) {
 		/** start with stack always clear. */
 		stackMapIn = new HashMap<Integer, Stack<Value>>();
 		stackMapOut = new HashMap<Integer, Stack<Value>>();
-		fields = new HashSet<FieldRef>();
+		fields = new HashSet<Field>();
 		stackMapIn.put(root.id, new Stack<Value>());
 	}
 	
@@ -662,7 +662,7 @@ public class DefUseFrameComputer extends GraphNodeVisitor {
 		final List<BytecodeInstruction> fieldsInsns = 
 				new ArrayList<BytecodeInstruction>(fields.size());
 		
-		for (final FieldRef var : fields) {
+		for (final Field var : fields) {
 			
 			final BytecodeInstruction insn =
 					new BytecodeInstruction(new InsnNode(Opcodes.NOP));

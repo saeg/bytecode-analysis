@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ObjectField extends FieldRef {
+public class ObjectField extends Field {
 
 	public final Value objectref;
 	

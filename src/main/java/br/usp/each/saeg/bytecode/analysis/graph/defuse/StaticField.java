@@ -30,7 +30,7 @@
  */
 package br.usp.each.saeg.bytecode.analysis.graph.defuse;
 
-public class StaticField extends FieldRef {
+public class StaticField extends Field {
 	
 	public StaticField(final String owner, 
 					   final String name, 
