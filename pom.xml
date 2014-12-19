@@ -12,7 +12,7 @@
 	<version>0.5.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>bytecode-analysis</name>
-	<url>https://github.com/andrioli/bytecode-analysis</url>
+	<url>https://github.com/saeg/bytecode-analysis</url>
 	<description>A prototype-library based on ASM 4 that computes definitions/uses of each instruction</description>
 
 	<licenses>
@@ -24,15 +24,15 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/andrioli/bytecode-analysis</url>
-		<connection>scm:git:https://github.com/andrioli/bytecode-analysis.git</connection>
-		<developerConnection>scm:git:git@github.com:andrioli/bytecode-analysis.git</developerConnection>
+		<url>https://github.com/saeg/bytecode-analysis</url>
+		<connection>scm:git:https://github.com/saeg/bytecode-analysis.git</connection>
+		<developerConnection>scm:git:git@github.com:saeg/bytecode-analysis.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/andrioli/bytecode-analysis/issues</url>
+		<url>https://github.com/saeg/bytecode-analysis/issues</url>
 	</issueManagement>
 
 	<developers>
