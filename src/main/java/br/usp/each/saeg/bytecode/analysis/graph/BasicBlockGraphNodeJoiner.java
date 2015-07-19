@@ -47,7 +47,7 @@ public class BasicBlockGraphNodeJoiner extends GraphNodeVisitor {
 	/**
 	 * Groups sequential instructions of the given graph in single nodes
 	 * 
-	 * @param graph the graph to be simplified
+	 * @param node the graph node to be simplified
 	 */
 	@Override
 	public void visit(final GraphNode node) {

@@ -99,6 +99,8 @@ public class GraphBuilder {
 	 *            the name of the class
 	 * @param methodNode
 	 *            the method for which the graph must be created
+	 * @param type
+	 *            the graph type
 	 */
 	public GraphBuilder(final String className, 
 						final MethodNode methodNode,
